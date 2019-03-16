@@ -1,0 +1,9 @@
+server:
+  port: "3000"
+vault:
+  host: "localhost"
+  port: "9999"
+  scheme: "http"
+  authentication: "token"
+  credential:
+    token: "0be39ac4-3aa7-fc2f-26a4-267fcaed3c34"
