@@ -17,6 +17,13 @@ import (
 
 func main() {
 	log.Println("Starting server initialization")
+	env, ok := os.LookupEnv("ENV")
+	if ok != true {
+		log.Printf("Environment: %s \n", env)
+		env = "dev"
+	}else{
+		log.Printf("Environment: %s \n", env)
+	}
 	var config = config.Config{}
 	config.Read()
 
@@ -66,7 +73,7 @@ func main() {
 
 	r.HandleFunc("/api/secret/{service}", func (w http.ResponseWriter, r *http.Request) {
 		prm := mux.Vars(r)
-		secret, err := vault.GetSecret(fmt.Sprintf("secret-v1/%s/dev", prm["service"]))
+		secret, err := vault.GetSecret(fmt.Sprintf("secret-v1/%s/%s", prm["service"], env))
 		if err != nil {
 			respondWithError(w, http.StatusInternalServerError, err.Error())
 			return

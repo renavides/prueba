@@ -6,4 +6,4 @@ vault:
   scheme: "http"
   authentication: "token"
   credential:
-    token: "0be39ac4-3aa7-fc2f-26a4-267fcaed3c34"
+    token: "fdf03f5f-0f79-8b89-ce7b-cc8cb1ec6aed"

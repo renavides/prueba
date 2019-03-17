@@ -157,18 +157,6 @@ func (v *Vault) GetSecret(path string) (Secret, error) {
 	return *secret, nil
 }
 
-func (v *Vault) GetCertificate(path string, cn string) (Secret, error) {
-	log.Printf("Getting certificate: %s", path)
-	certData := map[string]interface{}{
-		"common_name": cn,
-	}
-	secret, err := client.Logical().Write(path, certData)
-	if err != nil {
-		return Secret{}, err
-	}
-	return *secret, nil
-}
-
 func (v *Vault) RenewToken() {
 	//If it is let's renew it by creating the payload
 	secret, err := client.Auth().Token().RenewSelf(0)
@@ -237,32 +225,6 @@ func (v *Vault) RenewSecret(secret Secret) error {
 			log.Printf("Successfully renewed secret lease: %s", renewal.Secret.LeaseID)
 		}
 	}
-}
-
-func (v *Vault) Encrypt(path string, plaintext string) (string, error) {
-	var ciphertext string
-
-	data := map[string]interface{}{"plaintext": plaintext}
-	secret, err := client.Logical().Write(path, data)
-	if err != nil {
-		return "", err
-	}
-
-	ciphertext = secret.Data["ciphertext"].(string)
-	return ciphertext, nil
-}
-
-func (v *Vault) Decrypt(path string, ciphertext string) (string, error) {
-	var plaintext string
-
-	data := map[string]interface{}{"ciphertext": ciphertext}
-	secret, err := client.Logical().Write(path, data)
-	if err != nil {
-		return "", err
-	}
-
-	plaintext = secret.Data["plaintext"].(string)
-	return plaintext, nil
 }
 
 func (v *Vault) Close() {
